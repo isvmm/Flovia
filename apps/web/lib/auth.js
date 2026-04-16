@@ -2,7 +2,8 @@ import { betterAuth } from "better-auth";
 import { Pool } from "pg";
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL || "https://3000-iyi26r2281yumtin9fhoc.prev.appgen.com",
+  secret: process.env.BETTER_AUTH_SECRET || "build-time-fallback-secret-for-vercel",
+  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
   database: new Pool({
     connectionString: process.env.DATABASE_URL,
   }),
