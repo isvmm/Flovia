@@ -3,7 +3,7 @@ import { Pool } from "pg";
 
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET || "build-time-fallback-secret-for-vercel",
-  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
+  baseURL: process.env.BETTER_AUTH_URL || "https://flovia.vercel.app",
   database: new Pool({
     connectionString: process.env.DATABASE_URL,
   }),
