@@ -1,23 +1,25 @@
 import postgres from 'postgres';
 
-const sql = process.env.DATABASE_URL
-  ? postgres(process.env.DATABASE_URL, { 
+const DATABASE_URL = process.env.DATABASE_URL;
+
+const sql = DATABASE_URL
+  ? postgres(DATABASE_URL, { 
       ssl: 'require',
-      max: 10,
-      idle_timeout: 20,
-      connect_timeout: 30,
-      onnotice: () => {}, // Disable notice spam
+      max: 20, // Increased for better concurrency
+      idle_timeout: 30,
+      connect_timeout: 45, // More generous timeout for cold starts
+      onnotice: () => {}, 
+      // Basic connectivity logger
+      onparameter: (name, value) => {
+          if (name === 'application_name') console.log("DB connected");
+      }
     })
   : new Proxy(() => {}, {
       get() {
-        throw new Error(
-          'No database connection string was provided. Perhaps process.env.DATABASE_URL has not been set'
-        );
+        throw new Error('No DATABASE_URL provided');
       },
       apply() {
-        throw new Error(
-          'No database connection string was provided. Perhaps process.env.DATABASE_URL has not been set'
-        );
+        throw new Error('No DATABASE_URL provided');
       },
     });
 
