@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Only enable static export for mobile/capacitor builds
+  output: process.env.IS_CAPACITOR_BUILD === 'true' ? 'export' : undefined,
   turbopack: {},
   devIndicators: false,
   images: {
