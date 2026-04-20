@@ -32,7 +32,7 @@ function SearchContent() {
       try {
         const [auraRes, creatorsRes] = await Promise.all([
           fetch(apiUrl(`/aura-inspirations?limit=6`)),
-          fetch(apiUrl(`/suggested-creators?${user ? `)userId=${user.id}` : ''}limit=8`),
+          fetch(apiUrl(`/suggested-creators?${user ? `userId=${user.id}&` : ''}limit=8`)),
         ]);
 
         const auraData = await auraRes.json();
