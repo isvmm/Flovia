@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function UploadPage() {
   const router = useRouter();
@@ -77,7 +78,7 @@ export default function UploadPage() {
       const formData = new FormData();
       formData.append('file', new Blob([Buffer.from(file.base64, 'base64')], { type: file.mimeType }), file.name);
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
+      const response = await fetch(apiUrl(`/upload`), {
         method: 'POST',
         body: formData,
       });
@@ -90,7 +91,7 @@ export default function UploadPage() {
         const mediaType = file.mimeType.startsWith('video') ? 'video' : 'image';
         
         // Create a post record in the database
-        const postResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`, {
+        const postResponse = await fetch(apiUrl(`/posts`), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

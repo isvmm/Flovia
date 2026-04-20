@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function SetupPage() {
   const [status, setStatus] = useState('');
@@ -10,7 +11,7 @@ export default function SetupPage() {
     setLoading(true);
     setStatus('Setting up database tables...');
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/setup-db`, {
+      const response = await fetch(apiUrl(`/setup-db`), {
         method: 'POST'
       });
       const data = await response.json();
@@ -25,7 +26,7 @@ export default function SetupPage() {
     setLoading(true);
     setStatus('Seeding database with sample data...');
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/seed-db`, {
+      const response = await fetch(apiUrl(`/seed-db`), {
         method: 'POST'
       });
       const data = await response.json();

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function SignupPage() {
       // Claim welcome pack after successful signup
       if (result && result.success) {
         try {
-          const welcomeResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/credits/claim-welcome`, {
+          const welcomeResponse = await fetch(apiUrl(`/credits/claim-welcome`), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: result.user?.id || result.userId }),
@@ -74,7 +75,7 @@ export default function SignupPage() {
       // Claim welcome pack after successful signup
       if (result && result.user?.id) {
         try {
-          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/credits/claim-welcome`, {
+          await fetch(apiUrl(`/credits/claim-welcome`), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: result.user.id }),
@@ -102,7 +103,7 @@ export default function SignupPage() {
       // Claim welcome pack after successful signup
       if (result && result.user?.id) {
         try {
-          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/credits/claim-welcome`, {
+          await fetch(apiUrl(`/credits/claim-welcome`), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userId: result.user.id }),

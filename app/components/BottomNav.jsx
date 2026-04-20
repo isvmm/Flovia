@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -32,7 +33,7 @@ export default function BottomNav() {
     
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications/unread-count?userId=${user.id}`
+        apiUrl(`/notifications/unread-count?userId=${user.id}`)
       );
       
       if (!response.ok) {
@@ -57,7 +58,7 @@ export default function BottomNav() {
     // Mark all notifications as read when clicking the notification tab
     if (user?.id && unreadCount > 0) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/notifications/mark-all-read`, {
+        const response = await fetch(apiUrl(`/notifications/mark-all-read`), {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: user.id })

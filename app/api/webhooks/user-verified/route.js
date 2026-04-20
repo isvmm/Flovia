@@ -51,8 +51,9 @@ export async function POST(request) {
     const verificationType = emailVerified ? "email" : "phone";
 
     // Claim the referral reward via the existing endpoint
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     const claimResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/api/referrals/claim-reward`,
+      `${baseUrl}/api/referrals/claim-reward`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,8 +101,9 @@ export async function PUT(request) {
     }
 
     // Call claim reward endpoint
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"}/api/referrals/claim-reward`,
+      `${baseUrl}/api/referrals/claim-reward`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

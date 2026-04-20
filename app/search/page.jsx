@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 function SearchContent() {
   const router = useRouter();
@@ -30,8 +31,8 @@ function SearchContent() {
     const loadLandingData = async () => {
       try {
         const [auraRes, creatorsRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/aura-inspirations?limit=6`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/suggested-creators?${user ? `userId=${user.id}` : ''}limit=8`),
+          fetch(apiUrl(`/aura-inspirations?limit=6`)),
+          fetch(apiUrl(`/suggested-creators?${user ? `)userId=${user.id}` : ''}limit=8`),
         ]);
 
         const auraData = await auraRes.json();
@@ -45,7 +46,7 @@ function SearchContent() {
           const followStatus = {};
           for (const creator of creatorsData.creators) {
             const checkRes = await fetch(
-              `${process.env.NEXT_PUBLIC_API_URL}/api/follows/check?followerId=${user.id}&followingId=${creator.id}`
+              apiUrl(`/follows/check?followerId=${user.id}&followingId=${creator.id}`)
             );
             const checkData = await checkRes.json();
             followStatus[creator.id] = checkData.isFollowing;
@@ -67,7 +68,7 @@ function SearchContent() {
       setTrendingLoading(true);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/trending-posts?offset=0&limit=12`
+          apiUrl(`/trending-posts?offset=0&limit=12`)
         );
         const data = await response.json();
         setTrendingPosts(data.posts || []);
@@ -102,7 +103,7 @@ function SearchContent() {
     try {
       const newOffset = trendingOffset + 12;
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/trending-posts?offset=${newOffset}&limit=12`
+        apiUrl(`/trending-posts?offset=${newOffset}&limit=12`)
       );
       const data = await response.json();
       setTrendingPosts([...trendingPosts, ...(data.posts || [])]);
@@ -131,7 +132,7 @@ function SearchContent() {
     setLoading(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/discover?q=${encodeURIComponent(query)}&tab=${tabId}`
+        apiUrl(`/discover?q=${encodeURIComponent(query)}&tab=${tabId}`)
       );
       const data = await response.json();
       setResults(data.posts || []);
@@ -208,7 +209,7 @@ function SearchContent() {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/follows/toggle`,
+        apiUrl(`/follows/toggle`),
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

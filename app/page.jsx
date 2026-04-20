@@ -6,6 +6,7 @@ import { Capacitor } from '@capacitor/core';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { useAuth } from '@/hooks/useAuth';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 // Custom Remix Sparkle Icon Component
 function RemixSparkleIcon({ isGlowing }) {
@@ -96,12 +97,12 @@ export default function HomePage() {
     const fetchData = async () => {
       try {
         // Fetch trending searches
-        const trendingResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search`);
+        const trendingResponse = await fetch(apiUrl(`/search`));
         const trendingData = await trendingResponse.json();
         setTrendingSearches(trendingData.trendingSearches || []);
 
         // Fetch posts
-        const postsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`);
+        const postsResponse = await fetch(apiUrl(`/posts`));
         const postsData = await postsResponse.json();
         setPosts(postsData.posts || []);
         setFeedEmpty((postsData.posts || []).length === 0);
@@ -124,7 +125,7 @@ export default function HomePage() {
 
     setSearchLoading(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${encodeURIComponent(query)}`);
+      const response = await fetch(apiUrl(`/search?q=${encodeURIComponent(query)}`));
       const data = await response.json();
       setSearchResults(data);
     } catch (error) {

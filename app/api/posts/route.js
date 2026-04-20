@@ -118,7 +118,7 @@ export async function POST(request) {
       `;
     } catch (insertError) {
       if (insertError.code === '42P01') {
-        throw new Error("Database tables not initialized. Please visit http://localhost:3000/setup and click 'Create Tables'");
+        throw new Error("Database tables not initialized. Please visit the /setup page on your deployed site and click 'Create Tables'");
       }
       throw insertError;
     }

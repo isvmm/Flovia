@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, Suspense } from 'react';
 import { Capacitor } from '@capacitor/core';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 function PostContent() {
   const router = useRouter();
@@ -20,7 +21,7 @@ function PostContent() {
 
     const fetchPost = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${postId}`);
+        const response = await fetch(apiUrl(`/posts/${postId}`));
         if (!response.ok) throw new Error('Failed to fetch post');
         
         const data = await response.json();

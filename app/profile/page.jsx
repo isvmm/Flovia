@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -16,13 +17,13 @@ export default function ProfilePage() {
     const fetchData = async () => {
       try {
         // Fetch credits
-        const creditsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/credits/balance`);
+        const creditsResponse = await fetch(apiUrl(`/credits/balance`));
         const creditsData = await creditsResponse.json();
         setCredits(creditsData.lifetime_gift_credits || 10);
 
         // Fetch user's posts if logged in
         if (user?.id) {
-          const postsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts?userId=${user.id}`);
+          const postsResponse = await fetch(apiUrl(`/posts?userId=${user.id}`));
           const postsData = await postsResponse.json();
           setUserPosts(postsData.posts || []);
         }

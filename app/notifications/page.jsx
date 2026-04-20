@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function NotificationsPage() {
   const router = useRouter();
@@ -31,7 +32,7 @@ export default function NotificationsPage() {
   const markAllAsRead = async () => {
     if (!user?.id) return;
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/notifications/mark-all-read`, {
+      await fetch(apiUrl(`/notifications/mark-all-read`), {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id })
@@ -45,7 +46,7 @@ export default function NotificationsPage() {
     try {
       setFetching(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/notifications?userId=${user.id}&category=${category}`
+        apiUrl(`/notifications?userId=${user.id}&category=${category}`)
       );
       const data = await response.json();
       setNotifications(Array.isArray(data) ? data : []);
@@ -61,7 +62,7 @@ export default function NotificationsPage() {
   const handleNotificationClick = async (notification) => {
     if (!notification.is_read) {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/notifications`, {
+        await fetch(apiUrl(`/notifications`), {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ notificationId: notification.id, isRead: true })

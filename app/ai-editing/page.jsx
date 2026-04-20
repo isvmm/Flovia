@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function AiEditingPage() {
   const router = useRouter();
@@ -50,7 +51,7 @@ export default function AiEditingPage() {
       setIsProcessing(true);
       console.log('📸 Analyzing uploaded image with Gemini...');
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/process-image`, {
+      const response = await fetch(apiUrl(`/process-image`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -87,7 +88,7 @@ export default function AiEditingPage() {
       setIsProcessing(true);
       console.log('📸 Applying edit with prompt:', editPrompt);
       
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/process-image`, {
+      const response = await fetch(apiUrl(`/process-image`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

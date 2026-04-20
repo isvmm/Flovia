@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 export default function ReferralsPage() {
   const { user, loading } = useAuth();
@@ -29,7 +30,7 @@ export default function ReferralsPage() {
   const generateReferralCode = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/referrals/generate-code`,
+        apiUrl(`/referrals/generate-code`),
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -48,7 +49,7 @@ export default function ReferralsPage() {
     setLoadingData(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/referrals/status?userId=${user.id}`
+        apiUrl(`/referrals/status?userId=${user.id}`)
       );
       const data = await response.json();
       setReferralData(data);

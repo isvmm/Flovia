@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, Suspense } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import BottomNav from '@/app/components/BottomNav';
+import { apiUrl } from '@/lib/apiUrl';
 
 function RefillContent() {
   const router = useRouter();
@@ -23,7 +24,7 @@ function RefillContent() {
   const fetchCreditBalance = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/credits/balance?userId=${user.id}`
+        apiUrl(`/credits/balance?userId=${user.id}`)
       );
       const data = await response.json();
       setCreditBalance(data.totalCredits || 0);
@@ -35,7 +36,7 @@ function RefillContent() {
   const handlePurchase = async () => {
     setIsProcessing(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/credits/add`, {
+      const response = await fetch(apiUrl(`/credits/add`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, tierName: selectedTier }),
